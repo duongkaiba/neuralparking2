@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Realtime Plate Detection</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"
+        integrity="sha384-8fHJkE7DIrhB0WVLi+XIEJw4NqphNbyrG0OVq4z+J1Ks6+VCrZzgQdrKG0cXdi+/"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Realtime Plate Detection</h1>
+    <ul id="plateList"></ul>
+
+    <script>
+        var socket = io.connect('http://127.0.0.1:5000/video');
+
+        socket.on('plate_detected', function (data) {
+            var plate = data.plate;
+            var timestamp = new Date(data.timestamp * 1000);
+            var listItem = document.createElement('li');
+            listItem.textContent = 'Plate: ' + plate + ', Detected at: ' + timestamp.toLocaleString();
+            document.getElementById('plateList').appendChild(listItem);
+        });
+    </script>
+</body>
+
+</html>
