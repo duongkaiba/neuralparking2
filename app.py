@@ -6,7 +6,6 @@ import function.helper as helper
 import numpy as np
 import base64
 import time
-import cloudinary.uploader
 from flask_socketio import SocketIO, emit
 from pymongo import MongoClient
 from flask_cors import CORS
@@ -16,13 +15,6 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 CORS(app)
-
-# Cloudinary configuration
-cloudinary.config(
-  cloud_name = 'dupkiibar',
-  api_key = '872129692554817',
-  api_secret = 'J_mxmto-4q2YRqxw6C5d9vv_Obk'
-)
 
 # Kết nối tới MongoDB Atlas
 uri = "mongodb+srv://duonga1ne1:duong2003@cluster0.zjdjlqs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -102,21 +94,11 @@ def detect_license_plate():
                         break
                 if flag == 1:
                     break
-            # Vẽ bounding box lên ảnh
-            cv2.rectangle(image_with_boxes, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            # Vẽ biển số lên ảnh
-            cv2.putText(image_with_boxes, lp, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
-    # Tạo tên tệp ảnh tạm thời và lưu ảnh đã vẽ vào đó
-    temp_image_path = "temp_image.jpg"
-    cv2.imwrite(temp_image_path, image_with_boxes)
-    # # Tải ảnh đã vẽ lên Cloudinary
-    cloudinary_response = cloudinary.uploader.upload(temp_image_path)
     
     # Trả về kết quả
     return jsonify({
         "license_plates": list(list_read_plates),
-        "image_url": cloudinary_response['secure_url']
     })
 
 # @app.route('/detect_license_plate2', methods=['POST'])

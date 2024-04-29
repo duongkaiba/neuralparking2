@@ -2,7 +2,6 @@ Flask
 opencv-python
 torch
 numpy
-cloudinary
 flask-socketio
 pymongo
 gunicorn==21.2.0
@@ -10,7 +9,8 @@ flask_cors
 # Pillow
 pandas
 requests
-
+setuptools>=65.5.1
+wheel>=0.38.0
 
 gitpython>=3.1.30
 matplotlib>=3.3
